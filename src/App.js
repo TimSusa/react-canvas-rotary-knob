@@ -1,10 +1,10 @@
 import './App.css';
-import Slider from './Slider'
+import RotaryKnob from './RotaryKnob'
 
 function App() {
   return (
     <div className="App">
-      <Slider></Slider>
+      <RotaryKnob></RotaryKnob>
     </div>
   );
 }
