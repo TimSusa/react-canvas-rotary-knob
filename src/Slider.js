@@ -1,113 +1,95 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from "react";
 
-function Slider (){
-  const canvasRef = useRef(null)
-  let context = useRef(null)
+function Slider({ width = 160, height = 160, value = 0.5 }) {
+  const $window = window || {};
+  const canvasRef = useRef(null);
+  let context = useRef(null);
+  let animationFrameId = useRef(null);
+  const [val, setVal] = useState(value);
+  const isDragging = useRef(false);
+  const verticalDiff = useRef(0);
 
-  useEffect(()=>{
-    const canvas = canvasRef.current
-    context.current = canvas.getContext('2d')
-  },[])
-  
   useEffect(() => {
-  let animationFrameId = null
+    const canvas = canvasRef.current;
 
-  draw(0)
-    animationFrameId = window.requestAnimationFrame(draw)
-    console.log('draw with animationFrameId: ', animationFrameId)
-    return () => {
-      window.cancelAnimationFrame(animationFrameId)
-    }
+    context.current = canvas.getContext("2d");
+    var radius = canvas.height / 2;
+    context.current.translate(radius, radius);
+    draw(0);
+  }, []);
 
-  }, [draw])
-  
-  return <div><canvas width={450} heigth={450} onPointerDown= {handleDown} onPointerUp={handleCancel} ref={canvasRef} /></div>
+  return (
+    <div
+    >
+      <canvas
+        width={width}
+        height={height}
+        onPointerDown={handleDown}
+        onPointerMove={handleMove}
+        onPointerUp={handleCancel}
+        ref={canvasRef}
+      />
+      <div>{val.toString()}</div>
+    </div>
+  );
 
-  function draw (e) {
-     e && console.log(e.clientY)
-    const ctx = context.current
-    if (!ctx.canvas) return
-    var radius = ctx.canvas.height / 4 ;
-     drawFace(ctx, radius);
-     const val = e.clientY / ctx.canvas.height
-     const tmpVal = val < 0 ? 0 : val > 1 ? 1: val
-    drawTime(ctx, radius, tmpVal)
+  function yToVal(y: number) {
+    const val = y / canvasRef.current.height ;
+    const tmpVal = val < 0 ? 0 : val > 1 ? 1 : val;
+    const ttval = isNaN(tmpVal) ? value : tmpVal;
 
+    return ttval;
+  }
+
+  function draw(vDiff: number) {
+    const ctx = context.current;
+    if (!ctx.canvas) return;
+    const val = -yToVal(vDiff);
+    const v = val + 1;
+    setVal(v);
+    if (isNaN(val)) return;
+    drawHand(ctx, val * Math.PI * 2);
   }
 
   function handleDown(ev) {
-    canvasRef.current.onpointermove = handleMove; 
-    console.log('hanlldedown ', ev)
+    console.log('handle down ', ev.nativeEvent.offsetY )
+    isDragging.current = true;
+    //animationFrameId.current = $window.requestAnimationFrame(draw);
     canvasRef.current.setPointerCapture(ev.pointerId);
+    verticalDiff.current = ev.nativeEvent.offsetY ;
   }
 
   function handleMove(e) {
-    draw(e)
-  }
-  
-  function handleCancel(ev) {
-    canvasRef.current.onpointermove = null; 
-    console.log('handlerelease ', ev)
-    canvasRef.current.releasePointerCapture(ev.pointerId);
-  }
-
-  function drawFace(ctx, radius) {
-    var grad;
-    ctx.beginPath();
-    ctx.arc(80, 80, radius, 0, 2*Math.PI);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-    grad = ctx.createRadialGradient(80,80,radius*0.95, 80,80,radius*1.05);
-    grad.addColorStop(0, '#333');
-    grad.addColorStop(0.5, 'white');
-    grad.addColorStop(1, '#444');
-    ctx.strokeStyle = grad;
-    ctx.lineWidth = radius*0.1;
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(80, 80, radius*0.1, 0, 2*Math.PI);
-    ctx.fillStyle = '#333';
-    ctx.fill();
-  }
-  
-  function drawNumbers(ctx, radius) {
-    var ang;
-    var num;
-    ctx.font = radius*0.15 + "px arial";
-    //ctx.textBaseline="middle";
-    ctx.textAlign="center";
-    for(num = 1; num < 13; num++){
-      ang = num * Math.PI / 6;
-      ctx.rotate(ang);
-      ctx.translate(80, -radius);
-      ctx.rotate(-ang);
-      ctx.fillText(num.toString(), 0, 0);
-      ctx.rotate(ang);
-      ctx.translate(0, radius);
-      ctx.rotate(-ang);
+    if (isDragging.current === true) {
+      const tV = e.nativeEvent.offsetY - verticalDiff.current 
+      draw(tV);
     }
   }
-  
-  function drawTime(ctx, radius, val){
-      drawHand(ctx, -val*Math.PI*2, radius*4, radius*0.05);
+
+  function handleCancel(ev) {
+    canvasRef.current.releasePointerCapture(ev.pointerId);
+    //$window.cancelAnimationFrame(animationFrameId.current);
+    isDragging.current = false;
   }
-  
-  function drawHand(ctx, pos, length, width) {
-      ctx.beginPath();
-      ctx.lineWidth = width;
-      ctx.lineCap = "round";
-      ctx.moveTo(80,80);
-      ctx.rotate(pos);
-      ctx.lineTo(80, -length);
-      ctx.stroke();
-      ctx.rotate(-pos);
+
+  function drawHand(ctx, pos: number) {
+    ctx.clearRect(
+      -canvasRef.current.width / 2,
+      -canvasRef.current.height / 2,
+      width,
+      height,
+    );
+
+    ctx.beginPath();
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.arc(0, 0, canvasRef.current.width / 2, 0, Math.PI * 2, true);
+    ctx.moveTo(0, 0);
+    ctx.rotate(pos);
+    ctx.lineTo(0, -height / 2);
+    ctx.stroke();
+    ctx.rotate(-pos);
   }
 }
 
-export default Slider
-
-
-
-
-
-
+export default Slider;
