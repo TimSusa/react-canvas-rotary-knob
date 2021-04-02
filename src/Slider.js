@@ -16,6 +16,7 @@ function Slider({ width = 160, height = 160, value = 0.5 }) {
     context.current = canvas.getContext("2d");
     var radius = canvas.height / 2;
     context.current.translate(radius, radius);
+    lastOffset.current = valToY(val)
     draw(valToY(val));
   }, []);
 
