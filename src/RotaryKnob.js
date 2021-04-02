@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-function RotaryKnob ({ width = 160, height = 160, value = 80, max = 127 }) {
+function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0" }) {
   const caretWidth = width / 40;
   const canvasRef = useRef(null);
   const context = useRef(null);
@@ -13,15 +13,17 @@ function RotaryKnob ({ width = 160, height = 160, value = 80, max = 127 }) {
     const canvas = canvasRef.current;
 
     context.current = canvas.getContext("2d");
+    const ctx = context.current
     var radius = canvas.height / 2;
-    context.current.translate(radius, radius);
     lastOffset.current = valToY(val)
-
+    ctx.translate(radius, radius);
+    drawGrad(ctx)
     draw(valToY(val));
   }, []);
 
   return (
     <div
+    style={{background: 'beige'}}
     >
       <canvas
         width={width}
@@ -50,6 +52,16 @@ function RotaryKnob ({ width = 160, height = 160, value = 80, max = 127 }) {
     return tmpVal
   }
 
+  function drawGrad(ctx) {
+    ctx.beginPath()
+    var my_gradient = ctx.createLinearGradient(0, 0, 0, 170);
+    my_gradient.addColorStop(0, backgroundColor);
+    my_gradient.addColorStop(1, color);
+    ctx.fillStyle = my_gradient;
+    ctx.fillRect(20, 20, 150, 100);
+    ctx.fill()
+    ctx.closePath()
+  }
   function draw(vDiff) {
     const ctx = context.current;
     if (!ctx.canvas) return;
@@ -84,15 +96,22 @@ function RotaryKnob ({ width = 160, height = 160, value = 80, max = 127 }) {
       width,
       height,
     );
+    ctx.lineWidth = caretWidth;
     ctx.beginPath();
+    ctx.arc(0, 0, canvasRef.current.width / 2 - 2 * caretWidth, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.fill();
+
     ctx.lineWidth = caretWidth;
     ctx.lineCap = "round";
-    ctx.arc(0, 0, canvasRef.current.width / 2 - 2 * caretWidth, 0, Math.PI * 2, true);
+    ctx.strokeStyle = color
     ctx.moveTo(0, 0);
     ctx.rotate(-pos);
     ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
     ctx.stroke();
     ctx.rotate(pos);
+   // ctx.font = "30px Arial";
+    //ctx.strokeText(val, -2*caretWidth, caretWidth);
   }
 }
 
