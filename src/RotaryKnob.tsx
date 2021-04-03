@@ -32,7 +32,7 @@ function RotaryKnob({
     ctx.translate(radius, radius);
     draw(valToY(val));
     return ()=>{
-      ctx.translate(-radius, -radius);
+      //ctx.translate(-radius, -radius);
       ctx.restore();
     }
   }, [width, height]);

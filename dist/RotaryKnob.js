@@ -21,7 +21,7 @@ function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80,
         ctx.translate(radius, radius);
         draw(valToY(val));
         return () => {
-            ctx.translate(-radius, -radius);
+            //ctx.translate(-radius, -radius);
             ctx.restore();
         };
     }, [width, height]);
