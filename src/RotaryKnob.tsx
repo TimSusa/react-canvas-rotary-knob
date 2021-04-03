@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 export default RotaryKnob;
 
 function RotaryKnob({
+  isDisabled = false, 
   width = 160,
   height = 160,
   value = 80,
@@ -20,24 +21,25 @@ function RotaryKnob({
 
   useEffect(() => {
     const canvas: any = canvasRef.current;
-
     context.current = canvas.getContext("2d");
     const ctx: any = context.current;
     var radius = canvas.height / 2;
     lastOffset.current = valToY(val);
     ctx.translate(radius, radius);
-    drawGrad(ctx);
     draw(valToY(val));
-  }, []);
+    return ()=>{
+      ctx.translate(-radius, -radius);
+    }
+  }, [width, height, isDisabled]);
 
   return (
     <div>
       <canvas
         width={width}
         height={height}
-        onPointerDown={handleDown}
-        onPointerMove={handleMove}
-        onPointerUp={handleCancel}
+        onPointerDown={isDisabled ? noop : handleDown}
+        onPointerMove={isDisabled ? noop : handleMove}
+        onPointerUp={isDisabled ? noop : handleCancel}
         ref={canvasRef}
       />
       <div>{val.toString().slice(0, 5)}</div>
@@ -58,16 +60,7 @@ function RotaryKnob({
     return tmpVal;
   }
 
-  function drawGrad(ctx: any) {
-    ctx.beginPath();
-    const tmpGrad = ctx.createLinearGradient(0, 0, 0, 170);
-    tmpGrad.addColorStop(0, backgroundColor);
-    tmpGrad.addColorStop(1, color);
-    ctx.fillStyle = tmpGrad;
-    ctx.fillRect(20, 20, 150, 100);
-    ctx.fill();
-    ctx.closePath();
-  }
+
   function draw(vDiff: number) {
     const ctx: any = context.current;
     if (!ctx.canvas) return;
@@ -118,13 +111,18 @@ function RotaryKnob({
 
     ctx.lineWidth = caretWidth;
     ctx.lineCap = "round";
+    ctx.fillStyle = backgroundColor
     ctx.strokeStyle = color;
     ctx.moveTo(0, 0);
     ctx.rotate(-pos);
     ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
     ctx.stroke();
     ctx.rotate(pos);
+   // ctx.fill()
     // ctx.font = "30px Arial";
     //ctx.strokeText(val, -2*caretWidth, caretWidth);
   }
 }
+
+
+function noop(){}
