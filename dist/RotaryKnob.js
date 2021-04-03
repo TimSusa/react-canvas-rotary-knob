@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 export default RotaryKnob;
-function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0", }) {
+function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0", showValueLabel = true }) {
     const caretWidth = width / 40;
     const canvasRef = useRef(null);
     const context = useRef(null);
@@ -27,7 +27,7 @@ function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80,
     }, [width, height]);
     return (React.createElement("div", null,
         React.createElement("canvas", { width: width, height: height, onPointerDown: isDisabled ? noop : handleDown, onPointerMove: isDisabled ? noop : handleMove, onPointerUp: isDisabled ? noop : handleCancel, ref: canvasRef }),
-        React.createElement("div", null, val.toString().slice(0, 5))));
+        showValueLabel && (React.createElement("div", null, val.toString().slice(0, 5)))));
     function yToVal(y) {
         const tH = canvasRef.current.height;
         const val = y / tH;

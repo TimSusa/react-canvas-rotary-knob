@@ -10,6 +10,7 @@ function RotaryKnob({
   max = 127,
   backgroundColor = "#ccc",
   color = "#37332ee0",
+  showValueLabel= true
 }) {
   const caretWidth = width / 40;
   const canvasRef: any = useRef(null);
@@ -47,7 +48,10 @@ function RotaryKnob({
         onPointerUp={isDisabled ? noop : handleCancel}
         ref={canvasRef}
       />
-      <div>{val.toString().slice(0, 5)}</div>
+      {showValueLabel && (
+         <div>{val.toString().slice(0, 5)}</div>
+      )}
+     
     </div>
   );
 
