@@ -1,8 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import { useEffect, useRef, useState } from "react";
 
-export function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0" }) {
+RotaryKnob.propTypes = {
+  backgroundColor: PropTypes.string,
+  color: PropTypes.string,
+  height: PropTypes.number,
+  max: PropTypes.number,
+  value: PropTypes.number,
+  width: PropTypes.number
+}
+
+export function RotaryKnob({
+  width = 160,
+  height = 160,
+  value = 80,
+  max = 127,
+  backgroundColor = "#ccc",
+  color = "#37332ee0",
+}) {
   const caretWidth = width / 40;
-  const canvasRef = useRef(null);
+  const canvasRef: any = useRef(null);
   const context = useRef(null);
   const [val, setVal] = useState(value);
   const isDragging = useRef(false);
@@ -10,21 +27,19 @@ export function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, b
   const lastOffset = useRef(0);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas: any = canvasRef.current;
 
     context.current = canvas.getContext("2d");
-    const ctx = context.current
+    const ctx: any = context.current;
     var radius = canvas.height / 2;
-    lastOffset.current = valToY(val)
+    lastOffset.current = valToY(val);
     ctx.translate(radius, radius);
-    drawGrad(ctx)
+    drawGrad(ctx);
     draw(valToY(val));
   }, []);
 
   return (
-    <div
-    style={{background: 'beige'}}
-    >
+    <div>
       <canvas
         width={width}
         height={height}
@@ -37,59 +52,59 @@ export function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, b
     </div>
   );
 
-  function yToVal(y) {
-    const tH = canvasRef.current.height
+  function yToVal(y: number) {
+    const tH = canvasRef.current.height;
     const val = y / tH;
-    const ttH = 1
+    const ttH = 1;
     const tmpVal = val < 0 ? 0 : val > ttH ? ttH : val;
     const ttval = isNaN(tmpVal) ? value : tmpVal;
     return ttval;
   }
 
-
-  function valToY(val) {
-    const tmpVal = canvasRef.current.height * val / max
-    return tmpVal
+  function valToY(val: number) {
+    const tmpVal = canvasRef.current.height * val / max;
+    return tmpVal;
   }
 
-  function drawGrad(ctx) {
-    ctx.beginPath()
-    var my_gradient = ctx.createLinearGradient(0, 0, 0, 170);
-    my_gradient.addColorStop(0, backgroundColor);
-    my_gradient.addColorStop(1, color);
-    ctx.fillStyle = my_gradient;
+  function drawGrad(ctx: any) {
+    ctx.beginPath();
+    const tmpGrad = ctx.createLinearGradient(0, 0, 0, 170);
+    tmpGrad.addColorStop(0, backgroundColor);
+    tmpGrad.addColorStop(1, color);
+    ctx.fillStyle = tmpGrad;
     ctx.fillRect(20, 20, 150, 100);
-    ctx.fill()
-    ctx.closePath()
+    ctx.fill();
+    ctx.closePath();
   }
-  function draw(vDiff) {
-    const ctx = context.current;
+  function draw(vDiff: number) {
+    const ctx: any = context.current;
     if (!ctx.canvas) return;
     const val = yToVal(vDiff);
     setVal(val * max);
     drawCaret(ctx, -val * Math.PI * 2);
   }
 
-  function handleDown(ev) {
+  function handleDown(ev: any) {
     canvasRef.current.setPointerCapture(ev.pointerId);
     verticalDiff.current = ev.nativeEvent.offsetY;
     isDragging.current = true;
   }
 
-  function handleMove(e) {
+  function handleMove(e: any) {
     if (isDragging.current === true) {
-      const tV = -e.nativeEvent.offsetY + verticalDiff.current + lastOffset.current
+      const tV = -e.nativeEvent.offsetY + verticalDiff.current +
+        lastOffset.current;
       draw(tV);
     }
   }
 
-  function handleCancel(ev) {
+  function handleCancel(ev: any) {
     canvasRef.current.releasePointerCapture(ev.pointerId);
-    lastOffset.current = valToY(val)
+    lastOffset.current = valToY(val);
     isDragging.current = false;
   }
 
-  function drawCaret(ctx, pos) {
+  function drawCaret(ctx: any, pos: number) {
     ctx.clearRect(
       -canvasRef.current.width / 2,
       -canvasRef.current.height / 2,
@@ -98,19 +113,28 @@ export function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, b
     );
     ctx.lineWidth = caretWidth;
     ctx.beginPath();
-    ctx.arc(0, 0, canvasRef.current.width / 2 - 2 * caretWidth, 0, Math.PI * 2, true);
+    ctx.arc(
+      0,
+      0,
+      canvasRef.current.width / 2 - 2 * caretWidth,
+      0,
+      Math.PI * 2,
+      true,
+    );
     ctx.closePath();
     ctx.fill();
 
     ctx.lineWidth = caretWidth;
     ctx.lineCap = "round";
-    ctx.strokeStyle = color
+    ctx.strokeStyle = color;
     ctx.moveTo(0, 0);
     ctx.rotate(-pos);
     ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
     ctx.stroke();
     ctx.rotate(pos);
-   // ctx.font = "30px Arial";
+    // ctx.font = "30px Arial";
     //ctx.strokeText(val, -2*caretWidth, caretWidth);
   }
 }
+
+
