@@ -21,7 +21,6 @@ function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80,
         ctx.translate(radius, radius);
         draw(valToY(val));
         return () => {
-            //ctx.translate(-radius, -radius);
             ctx.restore();
         };
     }, [width, height]);
@@ -44,10 +43,10 @@ function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80,
         const ctx = context.current;
         if (!ctx.canvas)
             return;
-        const vall = yToVal(vDiff) * max;
-        setVal(vall);
-        cbValChanged(vall);
-        drawCaret(ctx, -vall * Math.PI * 2);
+        const val = yToVal(vDiff);
+        setVal(val * max);
+        cbValChanged(val);
+        drawCaret(ctx, -val * Math.PI * 2);
     }
     function handleDown(ev) {
         canvasRef.current.setPointerCapture(ev.pointerId);
@@ -78,6 +77,7 @@ function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80,
         ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
         ctx.stroke();
         ctx.rotate(pos);
+        // ctx.restore();
         //ctx.fill()
         // ctx.font = "30px Arial";
         //ctx.strokeText(val, -2*caretWidth, caretWidth);
