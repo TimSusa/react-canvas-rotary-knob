@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
-export function RotaryKnob({
+export default RotaryKnob;
+function RotaryKnob({
   width = 160,
   height = 160,
   value = 80,
@@ -126,5 +127,3 @@ export function RotaryKnob({
     //ctx.strokeText(val, -2*caretWidth, caretWidth);
   }
 }
-
-

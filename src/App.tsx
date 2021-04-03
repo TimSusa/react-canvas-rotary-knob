@@ -1,5 +1,5 @@
-import './App.css';
-import { RotaryKnob } from './RotaryKnob'
+import "./App.css";
+import RotaryKnob from "./RotaryKnob";
 
 function App() {
   return (
