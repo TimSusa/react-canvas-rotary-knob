@@ -4,8 +4,8 @@ export default RotaryKnob;
 
 function RotaryKnob({
   isDisabled = false,
-  width = 160,
-  height = 160,
+  tWidth = 160,
+  tHeight = 160,
   value = 80,
   max = 127,
   backgroundColor = "#ccc",
@@ -13,7 +13,10 @@ function RotaryKnob({
   showValueLabel = true,
   cbValChanged = (val: number) => val,
 }) {
-  const caretWidth = width / 40;
+  const caretWidth = tWidth / 40;
+  const width = tWidth - 4 * caretWidth;
+  const height = tHeight - 4 * tHeight / 40;
+
   const canvasRef: any = useRef(null);
   const context = useRef(null);
   const [val, setVal] = useState(value);
@@ -71,7 +74,7 @@ function RotaryKnob({
   function draw(vDiff: number) {
     const ctx: any = context.current;
     if (!ctx.canvas) return;
-    const yVal: number = yToVal(vDiff) ;
+    const yVal: number = yToVal(vDiff);
     const yValTmp: number = yVal * max;
     setVal(yValTmp);
     cbValChanged(yValTmp);
@@ -110,7 +113,7 @@ function RotaryKnob({
     ctx.arc(
       0,
       0,
-      canvasRef.current.width / 2 - 2 * caretWidth,
+      canvasRef.current.width / 2 - caretWidth,
       0,
       Math.PI * 2,
       true,
