@@ -25,12 +25,17 @@ function RotaryKnob({
     const ctx: any = context.current;
     var radius = canvas.height / 2;
     lastOffset.current = valToY(val);
+    ctx.lineWidth = caretWidth;
+    ctx.lineCap = "round";
+    ctx.fillStyle = backgroundColor
+    ctx.strokeStyle = color;
     ctx.translate(radius, radius);
     draw(valToY(val));
     return ()=>{
       ctx.translate(-radius, -radius);
+      ctx.restore();
     }
-  }, [width, height, isDisabled]);
+  }, [width, height]);
 
   return (
     <div>
@@ -106,19 +111,16 @@ function RotaryKnob({
       Math.PI * 2,
       true,
     );
-    ctx.closePath();
+    // ctx.closePath();
     ctx.fill();
 
-    ctx.lineWidth = caretWidth;
-    ctx.lineCap = "round";
-    ctx.fillStyle = backgroundColor
-    ctx.strokeStyle = color;
+
     ctx.moveTo(0, 0);
     ctx.rotate(-pos);
     ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
     ctx.stroke();
     ctx.rotate(pos);
-   // ctx.fill()
+    //ctx.fill()
     // ctx.font = "30px Arial";
     //ctx.strokeText(val, -2*caretWidth, caretWidth);
   }

@@ -14,12 +14,17 @@ function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80,
         const ctx = context.current;
         var radius = canvas.height / 2;
         lastOffset.current = valToY(val);
+        ctx.lineWidth = caretWidth;
+        ctx.lineCap = "round";
+        ctx.fillStyle = backgroundColor;
+        ctx.strokeStyle = color;
         ctx.translate(radius, radius);
         draw(valToY(val));
         return () => {
             ctx.translate(-radius, -radius);
+            ctx.restore();
         };
-    }, [width, height, isDisabled]);
+    }, [width, height]);
     return (React.createElement("div", null,
         React.createElement("canvas", { width: width, height: height, onPointerDown: isDisabled ? noop : handleDown, onPointerMove: isDisabled ? noop : handleMove, onPointerUp: isDisabled ? noop : handleCancel, ref: canvasRef }),
         React.createElement("div", null, val.toString().slice(0, 5))));
@@ -65,18 +70,14 @@ function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80,
         ctx.lineWidth = caretWidth;
         ctx.beginPath();
         ctx.arc(0, 0, canvasRef.current.width / 2 - 2 * caretWidth, 0, Math.PI * 2, true);
-        ctx.closePath();
+        // ctx.closePath();
         ctx.fill();
-        ctx.lineWidth = caretWidth;
-        ctx.lineCap = "round";
-        ctx.fillStyle = backgroundColor;
-        ctx.strokeStyle = color;
         ctx.moveTo(0, 0);
         ctx.rotate(-pos);
         ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
         ctx.stroke();
         ctx.rotate(pos);
-        // ctx.fill()
+        //ctx.fill()
         // ctx.font = "30px Arial";
         //ctx.strokeText(val, -2*caretWidth, caretWidth);
     }
