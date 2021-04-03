@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 export default RotaryKnob;
 function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0", }) {
     const caretWidth = width / 40;
@@ -19,8 +18,9 @@ function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, backgrou
         drawGrad(ctx);
         draw(valToY(val));
     }, []);
-    return (_jsxs("div", { children: [_jsx("canvas", { width: width, height: height, onPointerDown: handleDown, onPointerMove: handleMove, onPointerUp: handleCancel, ref: canvasRef }, void 0),
-            _jsx("div", { children: val.toString().slice(0, 5) }, void 0)] }, void 0));
+    return (React.createElement("div", null,
+        React.createElement("canvas", { width: width, height: height, onPointerDown: handleDown, onPointerMove: handleMove, onPointerUp: handleCancel, ref: canvasRef }),
+        React.createElement("div", null, val.toString().slice(0, 5))));
     function yToVal(y) {
         const tH = canvasRef.current.height;
         const val = y / tH;

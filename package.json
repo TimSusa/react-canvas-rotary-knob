@@ -2,10 +2,9 @@
   "name": "react-canvas-rotary-knob",
   "version": "0.1.1",
   "private": false,
-  "main": "./index.js",
   "dependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
@@ -19,15 +18,16 @@
     "parcel": "^2.0.0-beta.2",
     "react-scripts": "4.0.2",
     "vercel": "^21.3.3",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "rimraf": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-lib": "npx tsc -p ./tsconfig.json",
-    "deploy-app": "npx vercel"
+    "build-lib": "npx rimraf ./dist && mkdir dist && npx tsc -p ./tsconfig.json",
+    "deploy-app": "vercel"
   },
   "eslintConfig": {
     "extends": [
