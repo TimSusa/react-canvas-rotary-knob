@@ -1,4 +1,14 @@
+import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
+
+RotaryKnob.propTypes = {
+  backgroundColor: PropTypes.string,
+  color: PropTypes.string,
+  height: PropTypes.number,
+  max: PropTypes.number,
+  value: PropTypes.number,
+  width: PropTypes.number
+}
 
 export function RotaryKnob({
   width = 160,
