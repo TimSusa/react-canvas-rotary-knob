@@ -43,10 +43,11 @@ function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80,
         const ctx = context.current;
         if (!ctx.canvas)
             return;
-        const val = yToVal(vDiff);
-        setVal(val * max);
-        cbValChanged(val);
-        drawCaret(ctx, -val * Math.PI * 2);
+        const yVal = yToVal(vDiff);
+        const yValTmp = yVal * max;
+        setVal(yValTmp);
+        cbValChanged(yValTmp);
+        drawCaret(ctx, -yVal * Math.PI * 2);
     }
     function handleDown(ev) {
         canvasRef.current.setPointerCapture(ev.pointerId);

@@ -71,10 +71,11 @@ function RotaryKnob({
   function draw(vDiff: number) {
     const ctx: any = context.current;
     if (!ctx.canvas) return;
-    const val = yToVal(vDiff);
-    setVal(val * max);
-    cbValChanged(val);
-    drawCaret(ctx, -val * Math.PI * 2);
+    const yVal: number = yToVal(vDiff) ;
+    const yValTmp: number = yVal * max;
+    setVal(yValTmp);
+    cbValChanged(yValTmp);
+    drawCaret(ctx, -yVal * Math.PI * 2);
   }
 
   function handleDown(ev: any) {
