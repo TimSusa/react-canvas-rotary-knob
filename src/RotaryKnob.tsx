@@ -15,7 +15,7 @@ function RotaryKnob({
 }) {
   const caretWidth = tWidth / 40;
   const width = tWidth - 4 * caretWidth;
-  const height = tHeight - 4 * tHeight / 40;
+  const height = tWidth - 4 * caretWidth;
 
   const canvasRef: any = useRef(null);
   const context = useRef(null);
@@ -78,6 +78,8 @@ function RotaryKnob({
     const yValTmp: number = yVal * max;
     setVal(yValTmp);
     cbValChanged(yValTmp);
+    clearCanvasRect(ctx);
+
     drawCaret(ctx, -yVal * Math.PI * 2);
   }
 
@@ -101,13 +103,17 @@ function RotaryKnob({
     isDragging.current = false;
   }
 
-  function drawCaret(ctx: any, pos: number) {
+  function clearCanvasRect(ctx: any) {
     ctx.clearRect(
       -canvasRef.current.width / 2,
       -canvasRef.current.height / 2,
       width,
       height,
     );
+    //ctx.closePath()
+    ctx.restore()
+  }
+  function drawCaret(ctx: any, pos: number) {
     ctx.lineWidth = caretWidth;
     ctx.beginPath();
     ctx.arc(

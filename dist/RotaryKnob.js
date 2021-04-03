@@ -3,7 +3,7 @@ export default RotaryKnob;
 function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0", showValueLabel = true, cbValChanged = (val) => val, }) {
     const caretWidth = tWidth / 40;
     const width = tWidth - 4 * caretWidth;
-    const height = tHeight - 4 * tHeight / 40;
+    const height = tWidth - 4 * caretWidth;
     const canvasRef = useRef(null);
     const context = useRef(null);
     const [val, setVal] = useState(value);
@@ -49,6 +49,7 @@ function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight =
         const yValTmp = yVal * max;
         setVal(yValTmp);
         cbValChanged(yValTmp);
+        clearCanvasRect(ctx);
         drawCaret(ctx, -yVal * Math.PI * 2);
     }
     function handleDown(ev) {
@@ -68,8 +69,12 @@ function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight =
         lastOffset.current = valToY(val);
         isDragging.current = false;
     }
-    function drawCaret(ctx, pos) {
+    function clearCanvasRect(ctx) {
         ctx.clearRect(-canvasRef.current.width / 2, -canvasRef.current.height / 2, width, height);
+        //ctx.closePath()
+        ctx.restore();
+    }
+    function drawCaret(ctx, pos) {
         ctx.lineWidth = caretWidth;
         ctx.beginPath();
         ctx.arc(0, 0, canvasRef.current.width / 2 - caretWidth, 0, Math.PI * 2, true);
