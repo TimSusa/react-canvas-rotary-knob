@@ -4,8 +4,8 @@ export default RotaryKnob;
 
 function RotaryKnob({
   isDisabled = false,
-  tWidth = 160,
-  tHeight = 160,
+  width: tWidth = 160,
+  height: tHeight = 160,
   value = 80,
   max = 127,
   backgroundColor = "#ccc",
@@ -118,7 +118,6 @@ function RotaryKnob({
       Math.PI * 2,
       true,
     );
-    // ctx.closePath();
     ctx.fill();
 
     ctx.moveTo(0, 0);
@@ -126,6 +125,8 @@ function RotaryKnob({
     ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
     ctx.stroke();
     ctx.rotate(pos);
+    ctx.closePath();
+
     // ctx.restore();
     //ctx.fill()
     // ctx.font = "30px Arial";
