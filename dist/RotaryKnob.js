@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 export default RotaryKnob;
-function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0", showValueLabel = true }) {
+function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0", showValueLabel = true, cbValChanged = (val) => val, }) {
     const caretWidth = width / 40;
     const canvasRef = useRef(null);
     const context = useRef(null);
@@ -44,9 +44,10 @@ function RotaryKnob({ isDisabled = false, width = 160, height = 160, value = 80,
         const ctx = context.current;
         if (!ctx.canvas)
             return;
-        const val = yToVal(vDiff);
-        setVal(val * max);
-        drawCaret(ctx, -val * Math.PI * 2);
+        const vall = yToVal(vDiff) * max;
+        setVal(vall);
+        cbValChanged(vall);
+        drawCaret(ctx, -vall * Math.PI * 2);
     }
     function handleDown(ev) {
         canvasRef.current.setPointerCapture(ev.pointerId);

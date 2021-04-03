@@ -3,14 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 export default RotaryKnob;
 
 function RotaryKnob({
-  isDisabled = false, 
+  isDisabled = false,
   width = 160,
   height = 160,
   value = 80,
   max = 127,
   backgroundColor = "#ccc",
   color = "#37332ee0",
-  showValueLabel= true
+  showValueLabel = true,
+  cbValChanged = (val: number) => val,
 }) {
   const caretWidth = width / 40;
   const canvasRef: any = useRef(null);
@@ -28,14 +29,14 @@ function RotaryKnob({
     lastOffset.current = valToY(val);
     ctx.lineWidth = caretWidth;
     ctx.lineCap = "round";
-    ctx.fillStyle = backgroundColor
+    ctx.fillStyle = backgroundColor;
     ctx.strokeStyle = color;
     ctx.translate(radius, radius);
     draw(valToY(val));
-    return ()=>{
+    return () => {
       //ctx.translate(-radius, -radius);
       ctx.restore();
-    }
+    };
   }, [width, height]);
 
   return (
@@ -49,9 +50,8 @@ function RotaryKnob({
         ref={canvasRef}
       />
       {showValueLabel && (
-         <div>{val.toString().slice(0, 5)}</div>
+        <div>{val.toString().slice(0, 5)}</div>
       )}
-     
     </div>
   );
 
@@ -69,13 +69,13 @@ function RotaryKnob({
     return tmpVal;
   }
 
-
   function draw(vDiff: number) {
     const ctx: any = context.current;
     if (!ctx.canvas) return;
-    const val = yToVal(vDiff);
-    setVal(val * max);
-    drawCaret(ctx, -val * Math.PI * 2);
+    const vall = yToVal(vDiff) * max;
+    setVal(vall);
+    cbValChanged(vall);
+    drawCaret(ctx, -vall * Math.PI * 2);
   }
 
   function handleDown(ev: any) {
@@ -118,7 +118,6 @@ function RotaryKnob({
     // ctx.closePath();
     ctx.fill();
 
-
     ctx.moveTo(0, 0);
     ctx.rotate(-pos);
     ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
@@ -130,5 +129,4 @@ function RotaryKnob({
   }
 }
 
-
-function noop(){}
+function noop() {}
