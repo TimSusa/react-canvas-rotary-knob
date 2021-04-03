@@ -1,2 +1,89 @@
-function t(t){return t&&t.__esModule?t.default:t}var e,r={},n=require("react"),o=(e=n)&&e.__esModule?e.default:e,i=n.useEffect,a=n.useRef,u=n.useState;function c(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n}var l=function(t){var e=t.width,r=void 0===e?160:e,n=t.height,l=void 0===n?160:n,f=t.value,d=void 0===f?80:f,v=t.max,h=void 0===v?127:v,s=t.backgroundColor,y=void 0===s?"#ccc":s,p=t.color,g=void 0===p?"#37332ee0":p,m=r/40,b=a(null),S=a(null),P=function(t,e){return function(t){if(Array.isArray(t))return t}(t)||function(t,e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(t)){var r=[],n=!0,o=!1,i=void 0;try{for(var a,u=t[Symbol.iterator]();!(n=(a=u.next()).done)&&(r.push(a.value),!e||r.length!==e);n=!0);}catch(t){o=!0,i=t}finally{try{n||null==u.return||u.return()}finally{if(o)throw i}}return r}}(t,e)||function(t,e){if(t){if("string"==typeof t)return c(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);return"Object"===r&&t.constructor&&(r=t.constructor.name),"Map"===r||"Set"===r?Array.from(t):"Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r)?c(t,e):void 0}}(t,e)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}(u(d),2),w=P[0],C=P[1],E=a(!1),I=a(0),A=a(0);return i((function(){var t=b.current;S.current=t.getContext("2d");var e=S.current,r=t.height/2;A.current=M(w),e.translate(r,r),function(t){t.beginPath();var e=t.createLinearGradient(0,0,0,170);e.addColorStop(0,y),e.addColorStop(1,g),t.fillStyle=e,t.fillRect(20,20,150,100),t.fill(),t.closePath()}(e),j(M(w))}),[]),o.createElement("div",null,o.createElement("canvas",{width:r,height:l,onPointerDown:function(t){b.current.setPointerCapture(t.pointerId),I.current=t.nativeEvent.offsetY,E.current=!0},onPointerMove:function(t){!0===E.current&&j(-t.nativeEvent.offsetY+I.current+A.current)},onPointerUp:function(t){b.current.releasePointerCapture(t.pointerId),A.current=M(w),E.current=!1},ref:b}),o.createElement("div",null,w.toString().slice(0,5)));function M(t){return b.current.height*t/h}function j(t){var e=S.current;if(e.canvas){var n=function(t){var e=t/b.current.height,r=e<0?0:e>1?1:e;return isNaN(r)?d:r}(t);C(n*h),function(t,e){t.clearRect(-b.current.width/2,-b.current.height/2,r,l),t.lineWidth=m,t.beginPath(),t.arc(0,0,b.current.width/2-2*m,0,2*Math.PI,!0),t.closePath(),t.fill(),t.lineWidth=m,t.lineCap="round",t.strokeStyle=g,t.moveTo(0,0),t.rotate(-e),t.lineTo(0,-b.current.width/2+2*m),t.stroke(),t.rotate(e)}(e,-n*Math.PI*2)}}};r.default=l;var f=t(r);exports.default=f;
-//# sourceMappingURL=RotaryKnob.js.map
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useEffect, useRef, useState } from "react";
+export default RotaryKnob;
+function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0", }) {
+    const caretWidth = width / 40;
+    const canvasRef = useRef(null);
+    const context = useRef(null);
+    const [val, setVal] = useState(value);
+    const isDragging = useRef(false);
+    const verticalDiff = useRef(0);
+    const lastOffset = useRef(0);
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        context.current = canvas.getContext("2d");
+        const ctx = context.current;
+        var radius = canvas.height / 2;
+        lastOffset.current = valToY(val);
+        ctx.translate(radius, radius);
+        drawGrad(ctx);
+        draw(valToY(val));
+    }, []);
+    return (_jsxs("div", { children: [_jsx("canvas", { width: width, height: height, onPointerDown: handleDown, onPointerMove: handleMove, onPointerUp: handleCancel, ref: canvasRef }, void 0),
+            _jsx("div", { children: val.toString().slice(0, 5) }, void 0)] }, void 0));
+    function yToVal(y) {
+        const tH = canvasRef.current.height;
+        const val = y / tH;
+        const ttH = 1;
+        const tmpVal = val < 0 ? 0 : val > ttH ? ttH : val;
+        const ttval = isNaN(tmpVal) ? value : tmpVal;
+        return ttval;
+    }
+    function valToY(val) {
+        const tmpVal = canvasRef.current.height * val / max;
+        return tmpVal;
+    }
+    function drawGrad(ctx) {
+        ctx.beginPath();
+        const tmpGrad = ctx.createLinearGradient(0, 0, 0, 170);
+        tmpGrad.addColorStop(0, backgroundColor);
+        tmpGrad.addColorStop(1, color);
+        ctx.fillStyle = tmpGrad;
+        ctx.fillRect(20, 20, 150, 100);
+        ctx.fill();
+        ctx.closePath();
+    }
+    function draw(vDiff) {
+        const ctx = context.current;
+        if (!ctx.canvas)
+            return;
+        const val = yToVal(vDiff);
+        setVal(val * max);
+        drawCaret(ctx, -val * Math.PI * 2);
+    }
+    function handleDown(ev) {
+        canvasRef.current.setPointerCapture(ev.pointerId);
+        verticalDiff.current = ev.nativeEvent.offsetY;
+        isDragging.current = true;
+    }
+    function handleMove(e) {
+        if (isDragging.current === true) {
+            const tV = -e.nativeEvent.offsetY + verticalDiff.current +
+                lastOffset.current;
+            draw(tV);
+        }
+    }
+    function handleCancel(ev) {
+        canvasRef.current.releasePointerCapture(ev.pointerId);
+        lastOffset.current = valToY(val);
+        isDragging.current = false;
+    }
+    function drawCaret(ctx, pos) {
+        ctx.clearRect(-canvasRef.current.width / 2, -canvasRef.current.height / 2, width, height);
+        ctx.lineWidth = caretWidth;
+        ctx.beginPath();
+        ctx.arc(0, 0, canvasRef.current.width / 2 - 2 * caretWidth, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fill();
+        ctx.lineWidth = caretWidth;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = color;
+        ctx.moveTo(0, 0);
+        ctx.rotate(-pos);
+        ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
+        ctx.stroke();
+        ctx.rotate(pos);
+        // ctx.font = "30px Arial";
+        //ctx.strokeText(val, -2*caretWidth, caretWidth);
+    }
+}
