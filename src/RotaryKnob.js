@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0" }) {
+export function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0" }) {
   const caretWidth = width / 40;
   const canvasRef = useRef(null);
   const context = useRef(null);
@@ -114,6 +114,3 @@ function RotaryKnob({ width = 160, height = 160, value = 80, max = 127, backgrou
     //ctx.strokeText(val, -2*caretWidth, caretWidth);
   }
 }
-
-export default RotaryKnob
-  ;
