@@ -13,20 +13,22 @@
 
 This project consists of one testing application and one build for the lib. Consider the .tsx file can be used in the deno world, aswell. However, in the project directory, you can run:
 
-### 
-  isDisabled = false,
-  width: tWidth = 160,
-  height: tHeight = 160,
-  value = 80,
-  max = 127,
-  min = 0,
-  backgroundColor = "#ccc",
-  cbValChanged = (val: number) => val,
-  color = "#37332ee0",
-  showValueLabel = true,
-  debounceDelay = 5,
-  lineWidth = 40,
+### Component Intervace
 
+``` 
+  - isDisabled: bool, default Value = false,
+  - width: number: , default Value = 160,
+  - height: number: , default Value = 160,
+  - value: number, default Value = 80,
+  - max: number, default Value = 127,
+  - min: number, default Value = 0,
+  - backgroundColor: string, default Value = "#ccc",
+  - cbValChanged: function, default Value = (val: number): , default Value => val,
+  - color: object, default Value = "#37332ee0",
+  - showValueLabel: bool, default Value = true,
+  - debounceDelay: number, default Value = 5,
+  - lineWidth: number, default Value = 40,
+```
 ### Local Test Application
 ### `yarn start`
 
