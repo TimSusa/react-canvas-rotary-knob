@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { debounce } from 'debounce'
+import { debounce } from "debounce";
 
 export default RotaryKnob;
 
@@ -27,21 +27,21 @@ function RotaryKnob({
   const isDragging = useRef(false);
   const verticalDiff = useRef(0);
   const lastOffset = useRef(0);
-  let send: any = useRef(null)
-  const isFloatNumberMode = useRef(false)
+  let send: any = useRef(null);
+  const isFloatNumberMode = useRef(false);
 
   useEffect(() => {
-    if ((max-min) <=1) {
-      isFloatNumberMode.current = true
+    if ((max - min) <= 1) {
+      isFloatNumberMode.current = true;
     }
-    send.current = debounce(sendValOut, debounceDelay)
+    send.current = debounce(sendValOut, debounceDelay);
     function sendValOut(val: any) {
-      return cbValChanged(isFloatNumberMode.current ? val : Math.floor(val))
+      return cbValChanged(isFloatNumberMode.current ? val : Math.floor(val));
     }
-    return ()=>{
-      send.current = null
-    }
-  }, [max, min, debounceDelay, caretWidth])
+    return () => {
+      send.current = null;
+    };
+  }, [max, min, debounceDelay, caretWidth]);
 
   useEffect(() => {
     const canvas: any = canvasRef.current;
@@ -58,9 +58,7 @@ function RotaryKnob({
     return () => {
       ctx.restore();
     };
-  },  [color, backgroundColor, width, height]);
-
-
+  }, [color, backgroundColor, width, height]);
 
   return (
     <div>
@@ -131,15 +129,16 @@ function RotaryKnob({
       height,
     );
     //ctx.closePath()
-    ctx.restore()
+    ctx.restore();
   }
   function drawCaret(ctx: any, pos: number) {
+    const xOffSet = canvasRef.current.width / 2;
     ctx.lineWidth = caretWidth;
     ctx.beginPath();
     ctx.arc(
       0,
       0,
-      canvasRef.current.width / 2 - caretWidth,
+      xOffSet - caretWidth,
       0,
       Math.PI * 2,
       true,
@@ -148,7 +147,7 @@ function RotaryKnob({
 
     ctx.moveTo(0, 0);
     ctx.rotate(-pos);
-    ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
+    ctx.lineTo(0, -xOffSet + 2 * caretWidth);
     ctx.stroke();
     ctx.rotate(pos);
     ctx.closePath();

@@ -2,11 +2,29 @@
 - Fully customizable Rotary Knob
 - Powered with HTML Canvas
 
+<p align="center">
+  <img width="250" src="./docs/sc1.png">
+</p>
 
-## Available Scripts
+## Get Started
 
-In the project directory, you can run:
+This project consists of one testing application and one build for the lib. Consider the .tsx file can be used in the deno world, aswell. However, in the project directory, you can run:
 
+### 
+  isDisabled = false,
+  width: tWidth = 160,
+  height: tHeight = 160,
+  value = 80,
+  max = 127,
+  min = 0,
+  backgroundColor = "#ccc",
+  cbValChanged = (val: number) => val,
+  color = "#37332ee0",
+  showValueLabel = true,
+  debounceDelay = 5,
+  lineWidth = 40,
+
+### Local Test Application
 ### `yarn start`
 
 Runs the wrapper app in the development mode.\
