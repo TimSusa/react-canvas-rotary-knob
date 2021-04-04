@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+import { debounce } from 'debounce';
 export default RotaryKnob;
-function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0", showValueLabel = true, cbValChanged = (val) => val, }) {
+function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight = 160, value = 80, max = 127, backgroundColor = "#ccc", color = "#37332ee0", showValueLabel = true, debounceDelay = 5, cbValChanged = (val) => val, }) {
     const caretWidth = tWidth / 40;
     const width = tWidth - 4 * caretWidth;
     const height = tWidth - 4 * caretWidth;
@@ -10,6 +11,16 @@ function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight =
     const isDragging = useRef(false);
     const verticalDiff = useRef(0);
     const lastOffset = useRef(0);
+    let send = useRef(null);
+    useEffect(() => {
+        send.current = debounce(sendValOut, debounceDelay);
+        function sendValOut(val) {
+            return cbValChanged(val);
+        }
+        return () => {
+            send.current = null;
+        };
+    }, []);
     useEffect(() => {
         const canvas = canvasRef.current;
         context.current = canvas.getContext("2d");
@@ -48,7 +59,7 @@ function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight =
         const yVal = yToVal(vDiff);
         const yValTmp = yVal * max;
         setVal(yValTmp);
-        cbValChanged(yValTmp);
+        send.current(yValTmp);
         clearCanvasRect(ctx);
         drawCaret(ctx, -yVal * Math.PI * 2);
     }

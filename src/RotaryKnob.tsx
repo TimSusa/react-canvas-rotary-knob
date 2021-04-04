@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { debounce } from 'debounce'
 
 export default RotaryKnob;
 
@@ -11,6 +12,7 @@ function RotaryKnob({
   backgroundColor = "#ccc",
   color = "#37332ee0",
   showValueLabel = true,
+  debounceDelay = 5,
   cbValChanged = (val: number) => val,
 }) {
   const caretWidth = tWidth / 40;
@@ -23,6 +25,17 @@ function RotaryKnob({
   const isDragging = useRef(false);
   const verticalDiff = useRef(0);
   const lastOffset = useRef(0);
+  let send: any = useRef(null)
+
+  useEffect(() => {
+    send.current = debounce(sendValOut, debounceDelay)
+    function sendValOut(val: any) {
+      return cbValChanged(val)
+    }
+    return ()=>{
+      send.current = null
+    }
+  }, [])
 
   useEffect(() => {
     const canvas: any = canvasRef.current;
@@ -40,6 +53,8 @@ function RotaryKnob({
       ctx.restore();
     };
   }, [width, height]);
+
+
 
   return (
     <div>
@@ -77,9 +92,8 @@ function RotaryKnob({
     const yVal: number = yToVal(vDiff);
     const yValTmp: number = yVal * max;
     setVal(yValTmp);
-    cbValChanged(yValTmp);
+    send.current(yValTmp);
     clearCanvasRect(ctx);
-
     drawCaret(ctx, -yVal * Math.PI * 2);
   }
 

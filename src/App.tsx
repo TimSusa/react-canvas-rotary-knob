@@ -5,7 +5,10 @@ function App() {
   return (
     <div className="App">
       <div>Canvas Rotary Knob</div>
-      <RotaryKnob></RotaryKnob>
+      <RotaryKnob cbValChanged={(e)=> {
+        console.log(e)
+        return 0
+      }}></RotaryKnob>
     </div>
   );
 }
