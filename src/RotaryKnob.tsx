@@ -9,6 +9,7 @@ function RotaryKnob({
   height: tHeight = 160,
   value = 80,
   max = 127,
+  min = 0,
   backgroundColor = "#ccc",
   color = "#37332ee0",
   showValueLabel = true,
@@ -26,16 +27,20 @@ function RotaryKnob({
   const verticalDiff = useRef(0);
   const lastOffset = useRef(0);
   let send: any = useRef(null)
+  const isFloatNumberMode = useRef(false)
 
   useEffect(() => {
+    if ((max-min) <=1) {
+      isFloatNumberMode.current = true
+    }
     send.current = debounce(sendValOut, debounceDelay)
     function sendValOut(val: any) {
-      return cbValChanged(val)
+      return cbValChanged(isFloatNumberMode.current ? val : Math.floor(val))
     }
     return ()=>{
       send.current = null
     }
-  }, [])
+  }, [max, min, debounceDelay])
 
   useEffect(() => {
     const canvas: any = canvasRef.current;
