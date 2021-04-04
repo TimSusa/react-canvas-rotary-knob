@@ -41,13 +41,20 @@ function RotaryKnob({
     return () => {
       send.current = null;
     };
-  }, [max, min, debounceDelay, caretWidth]);
+  }, [max, min, debounceDelay]);
 
   useEffect(() => {
     const canvas: any = canvasRef.current;
     context.current = canvas.getContext("2d");
     const ctx: any = context.current;
-    var radius = canvas.height / 2;
+    return () => {
+      ctx.restore();
+    };
+  }, []);
+
+  useEffect(() => {
+    const ctx: any = context.current;
+    var radius = canvasRef.current.height / 2;
     lastOffset.current = valToY(val);
     ctx.lineWidth = caretWidth;
     ctx.lineCap = "round";
@@ -58,12 +65,12 @@ function RotaryKnob({
     return () => {
       ctx.restore();
     };
-  }, [color, backgroundColor, width, height]);
+  }, [color, backgroundColor, width, height, caretWidth]);
 
   useEffect(() => {
     draw(valToY(value));
   }, [value]);
-  
+
   return (
     <div>
       <canvas
