@@ -60,6 +60,10 @@ function RotaryKnob({
     };
   }, [color, backgroundColor, width, height]);
 
+  useEffect(() => {
+    draw(valToY(value));
+  }, [value]);
+  
   return (
     <div>
       <canvas

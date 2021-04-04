@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   background: "beige";
+  width: 70%;
 }
 
 .App-logo {
@@ -12,6 +13,28 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.flex-wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-left {
+  width: "30%";
+  display: flex;
+  flex-direction: column;
+}
+.flex-right {
+  width: "100%";
+}
+
+label,
+input {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
 .App-header {
