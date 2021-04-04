@@ -6,16 +6,22 @@
   <img width="250" src="./docs/sc1.png">
 </p>
 
-## WebDemo
+## Live Knob Configurator
 [Live Web Demo](https://react-canvas-rotary-knob-timsusa.vercel.app) 
 
 ## Get Started
 
-This project consists of one testing application and one build for the lib. Consider the .tsx file can be used in the deno world, aswell. However, in the project directory, you can run:
+This project consists of one configuration application as test environment and one build for the lib. Consider the .tsx file can be used in the deno world, aswell. 
+
+## Build the library
+```
+npm run build-lib
+``` 
+
+
+However, in the project directory, you can run:
 
 ### Component Interface
-
-``` 
   - isDisabled: bool, default Value = false,
   - width: number: , default Value = 160,
   - height: number: , default Value = 160,
@@ -28,23 +34,23 @@ This project consists of one testing application and one build for the lib. Cons
   - showValueLabel: bool, default Value = true,
   - debounceDelay: number, default Value = 5,
   - lineWidth: number, default Value = 40,
-```
-### Local Test Application
-### `yarn start`
 
+### Local Test Application
+### Start Configuration Application
+
+```
+npm run start
+```  
 Runs the wrapper app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
+### Build the Configuration Application
+```
+npm run build
+```  
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
@@ -52,6 +58,32 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+
+
+### Build the Library
+```
+npm run build-lib
+```  
+Builds the library for production to the `lib` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+
+
+### Testing
+
+As far as tests are in the project, these could be started via:
+``` 
+npm run test
+``` 
+
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### Deployment
 
