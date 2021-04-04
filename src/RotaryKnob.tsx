@@ -14,9 +14,10 @@ function RotaryKnob({
   color = "#37332ee0",
   showValueLabel = true,
   debounceDelay = 5,
+  lineWidth = 40,
   cbValChanged = (val: number) => val,
 }) {
-  const caretWidth = tWidth / 40;
+  const caretWidth = tWidth / lineWidth;
   const width = tWidth - 4 * caretWidth;
   const height = tWidth - 4 * caretWidth;
 
@@ -40,7 +41,7 @@ function RotaryKnob({
     return ()=>{
       send.current = null
     }
-  }, [max, min, debounceDelay])
+  }, [max, min, debounceDelay, caretWidth])
 
   useEffect(() => {
     const canvas: any = canvasRef.current;

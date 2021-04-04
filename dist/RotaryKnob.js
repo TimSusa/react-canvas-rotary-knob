@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { debounce } from 'debounce';
 export default RotaryKnob;
-function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight = 160, value = 80, max = 127, min = 0, backgroundColor = "#ccc", color = "#37332ee0", showValueLabel = true, debounceDelay = 5, cbValChanged = (val) => val, }) {
-    const caretWidth = tWidth / 40;
+function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight = 160, value = 80, max = 127, min = 0, backgroundColor = "#ccc", color = "#37332ee0", showValueLabel = true, debounceDelay = 5, lineWidth = 40, cbValChanged = (val) => val, }) {
+    const caretWidth = tWidth / lineWidth;
     const width = tWidth - 4 * caretWidth;
     const height = tWidth - 4 * caretWidth;
     const canvasRef = useRef(null);
@@ -24,7 +24,7 @@ function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight =
         return () => {
             send.current = null;
         };
-    }, [max, min, debounceDelay]);
+    }, [max, min, debounceDelay, caretWidth]);
     useEffect(() => {
         const canvas = canvasRef.current;
         context.current = canvas.getContext("2d");
