@@ -52,7 +52,7 @@ function RotaryKnob({
     return () => {
       ctx.restore();
     };
-  }, [width, height]);
+  },  [color, backgroundColor, width, height]);
 
 
 

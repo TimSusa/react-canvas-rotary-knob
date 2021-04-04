@@ -36,7 +36,7 @@ function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight =
         return () => {
             ctx.restore();
         };
-    }, [width, height]);
+    }, [color, backgroundColor, width, height]);
     return (React.createElement("div", null,
         React.createElement("canvas", { width: width, height: height, onPointerDown: isDisabled ? noop : handleDown, onPointerMove: isDisabled ? noop : handleMove, onPointerUp: isDisabled ? noop : handleCancel, ref: canvasRef }),
         showValueLabel && (React.createElement("div", null, val.toString().slice(0, 5)))));
