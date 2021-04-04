@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { debounce } from 'debounce';
+import { debounce } from "debounce";
 export default RotaryKnob;
 function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight = 160, value = 80, max = 127, min = 0, backgroundColor = "#ccc", color = "#37332ee0", showValueLabel = true, debounceDelay = 5, lineWidth = 40, cbValChanged = (val) => val, }) {
     const caretWidth = tWidth / lineWidth;
@@ -90,13 +90,14 @@ function RotaryKnob({ isDisabled = false, width: tWidth = 160, height: tHeight =
         ctx.restore();
     }
     function drawCaret(ctx, pos) {
+        const xOffSet = canvasRef.current.width / 2;
         ctx.lineWidth = caretWidth;
         ctx.beginPath();
-        ctx.arc(0, 0, canvasRef.current.width / 2 - caretWidth, 0, Math.PI * 2, true);
+        ctx.arc(0, 0, xOffSet - caretWidth, 0, Math.PI * 2, true);
         ctx.fill();
         ctx.moveTo(0, 0);
         ctx.rotate(-pos);
-        ctx.lineTo(0, -canvasRef.current.width / 2 + 2 * caretWidth);
+        ctx.lineTo(0, -xOffSet + 2 * caretWidth);
         ctx.stroke();
         ctx.rotate(pos);
         ctx.closePath();
