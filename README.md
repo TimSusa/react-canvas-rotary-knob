@@ -13,7 +13,7 @@
 
 This project consists of one testing application and one build for the lib. Consider the .tsx file can be used in the deno world, aswell. However, in the project directory, you can run:
 
-### Component Intervace
+### Component Interface
 
 ``` 
   - isDisabled: bool, default Value = false,
