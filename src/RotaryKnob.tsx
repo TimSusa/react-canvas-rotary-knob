@@ -41,7 +41,7 @@ function RotaryKnob({
     return () => {
       send.current = null;
     };
-  }, [max, min, debounceDelay]);
+  }, [max, min, debounceDelay,]);
 
   useEffect(() => {
     const canvas: any = canvasRef.current;
@@ -155,12 +155,15 @@ function RotaryKnob({
       true,
     );
     ctx.fill();
-
-    ctx.moveTo(0, 0);
-    ctx.rotate(-pos);
-    ctx.lineTo(0, -xOffSet + 2 * caretWidth);
     ctx.stroke();
-    ctx.rotate(pos);
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.rotate(-pos - Math.PI);
+    ctx.lineTo(0, -xOffSet + 4 * caretWidth);
+    ctx.stroke();
+    ctx.rotate(pos + Math.PI);
     ctx.closePath();
 
     // ctx.restore();
