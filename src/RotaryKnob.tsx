@@ -165,11 +165,6 @@ function RotaryKnob({
     ctx.stroke();
     ctx.rotate(pos + Math.PI);
     ctx.closePath();
-
-    // ctx.restore();
-    //ctx.fill()
-    // ctx.font = "30px Arial";
-    //ctx.strokeText(val, -2*caretWidth, caretWidth);
   }
 }
 
