@@ -11,6 +11,7 @@ function RotaryKnob({
   min = 0,
   backgroundColor = "#ccc",
   color = "#37332ee0",
+  caretColor = "#67332ee0",
   showValueLabel = true,
   debounceDelay = 5,
   lineWidth = 40,
@@ -19,8 +20,8 @@ function RotaryKnob({
   const caretWidth = tWidth / lineWidth;
   const width = tWidth - 4 * caretWidth;
   const height = tWidth - 4 * caretWidth;
-  const canvasRef: any = useRef(null);
-  const context = useRef(null);
+  let canvasRef = useRef<HTMLCanvasElement | null>(null);
+  let context = useRef<CanvasRenderingContext2D| null>(null);
   const [val, setVal] = useState(value);
   const isDragging = useRef(false);
   const verticalDiff = useRef(0);
@@ -42,9 +43,10 @@ function RotaryKnob({
   }, [max, min, debounceDelay]);
 
   useEffect(() => {
-    const canvas: any = canvasRef.current;
-    context.current = canvas.getContext("2d");
-    const ctx: any = context.current;
+    const canvas: HTMLCanvasElement = canvasRef.current!;
+    let ctx: CanvasRenderingContext2D = canvas.getContext("2d")!;
+    context.current = ctx;
+    canvas.focus();
     return () => {
       ctx.restore();
     };
@@ -85,7 +87,8 @@ function RotaryKnob({
   );
 
   function yToVal(y: number) {
-    const tH = canvasRef.current.height;
+    const canvas: HTMLCanvasElement = canvasRef.current!;
+    const tH: number = canvas.height ;
     const val = y / tH;
     const ttH = 1;
     const tmpVal = val < 0 ? 0 : val > ttH ? ttH : val;
@@ -94,7 +97,8 @@ function RotaryKnob({
   }
 
   function valToY(val: number) {
-    const tmpVal = canvasRef.current.height * val / max;
+    const canvas: HTMLCanvasElement = canvasRef.current!;
+    const tmpVal = canvas.height * val / max;
     return tmpVal;
   }
 
@@ -110,7 +114,8 @@ function RotaryKnob({
   }
 
   function handleDown(ev: any) {
-    canvasRef.current.setPointerCapture(ev.pointerId);
+    const canvas: HTMLCanvasElement = canvasRef.current!;
+    canvas.setPointerCapture(ev.pointerId);
     verticalDiff.current = ev.nativeEvent.offsetY;
     isDragging.current = true;
   }
@@ -124,10 +129,10 @@ function RotaryKnob({
   }
 
   function handleCancel(ev: any) {
-    canvasRef.current.releasePointerCapture(ev.pointerId);
+    const canvas: HTMLCanvasElement = canvasRef.current!;
+    canvas.releasePointerCapture(ev.pointerId);
     lastOffset.current = valToY(val);
     isDragging.current = false;
-    
   }
 
   function clearCanvasRect(ctx: any) {
@@ -140,9 +145,10 @@ function RotaryKnob({
     ctx.restore();
   }
   function drawCaret(ctx: any, pos: number) {
-    const radius = canvasRef.current.height / 2;
+    const canvas: HTMLCanvasElement = canvasRef.current!;
+    const radius = canvas.height / 2;
     ctx.translate(radius, radius);
-    const xOffSet = canvasRef.current.width / 2;
+    const xOffSet = canvas.width / 2;
     ctx.lineWidth = caretWidth;
     ctx.beginPath();
     ctx.arc(
@@ -153,6 +159,7 @@ function RotaryKnob({
       Math.PI * 2,
       true,
     );
+    ctx.strokeStyle = color;
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
@@ -162,6 +169,8 @@ function RotaryKnob({
     ctx.rotate(-rot);
     ctx.lineTo(0, xOffSet - 4 * caretWidth);
     ctx.rotate(rot);
+    ctx.strokeStyle = caretColor;
+    ctx.lineWidth = caretWidth*3;
     ctx.stroke();
     ctx.translate(-radius, -radius);
     ctx.closePath();
