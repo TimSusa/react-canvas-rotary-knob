@@ -170,7 +170,7 @@ function RotaryKnob({
     ctx.lineTo(0, xOffSet - 4 * caretWidth);
     ctx.rotate(rot);
     ctx.strokeStyle = caretColor;
-    ctx.lineWidth = caretWidth*3;
+    ctx.lineWidth = caretWidth*2;
     ctx.stroke();
     ctx.translate(-radius, -radius);
     ctx.closePath();
