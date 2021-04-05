@@ -6,7 +6,6 @@ export default RotaryKnob;
 function RotaryKnob({
   isDisabled = false,
   width: tWidth = 160,
-  height: tHeight = 160,
   value = 80,
   max = 127,
   min = 0,
@@ -20,7 +19,6 @@ function RotaryKnob({
   const caretWidth = tWidth / lineWidth;
   const width = tWidth - 4 * caretWidth;
   const height = tWidth - 4 * caretWidth;
-
   const canvasRef: any = useRef(null);
   const context = useRef(null);
   const [val, setVal] = useState(value);
@@ -41,7 +39,7 @@ function RotaryKnob({
     return () => {
       send.current = null;
     };
-  }, [max, min, debounceDelay,]);
+  }, [max, min, debounceDelay]);
 
   useEffect(() => {
     const canvas: any = canvasRef.current;
@@ -54,13 +52,12 @@ function RotaryKnob({
 
   useEffect(() => {
     const ctx: any = context.current;
-    var radius = canvasRef.current.height / 2;
     lastOffset.current = valToY(val);
     ctx.lineWidth = caretWidth;
     ctx.lineCap = "round";
     ctx.fillStyle = backgroundColor;
     ctx.strokeStyle = color;
-    ctx.translate(radius, radius);
+
     draw(valToY(val));
     return () => {
       ctx.restore();
@@ -109,7 +106,7 @@ function RotaryKnob({
     setVal(yValTmp);
     send.current(yValTmp);
     clearCanvasRect(ctx);
-    drawCaret(ctx, -yVal * Math.PI * 2);
+    drawCaret(ctx, yVal);
   }
 
   function handleDown(ev: any) {
@@ -130,19 +127,21 @@ function RotaryKnob({
     canvasRef.current.releasePointerCapture(ev.pointerId);
     lastOffset.current = valToY(val);
     isDragging.current = false;
+    
   }
 
   function clearCanvasRect(ctx: any) {
-    ctx.clearRect(
-      -canvasRef.current.width / 2,
-      -canvasRef.current.height / 2,
-      width,
-      height,
-    );
-    //ctx.closePath()
+    // ctx.clearRect(
+    //   -canvasRef.current.width / 2,
+    //   -canvasRef.current.height / 2,
+    //   width,
+    //   height,
+    // );
     ctx.restore();
   }
   function drawCaret(ctx: any, pos: number) {
+    const radius = canvasRef.current.height / 2;
+    ctx.translate(radius, radius);
     const xOffSet = canvasRef.current.width / 2;
     ctx.lineWidth = caretWidth;
     ctx.beginPath();
@@ -157,13 +156,14 @@ function RotaryKnob({
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
-
+    const rot = -pos * Math.PI * 2;
     ctx.beginPath();
     ctx.moveTo(0, 0);
-    ctx.rotate(-pos - Math.PI);
-    ctx.lineTo(0, -xOffSet + 4 * caretWidth);
+    ctx.rotate(-rot);
+    ctx.lineTo(0, xOffSet - 4 * caretWidth);
+    ctx.rotate(rot);
     ctx.stroke();
-    ctx.rotate(pos + Math.PI);
+    ctx.translate(-radius, -radius);
     ctx.closePath();
   }
 }
