@@ -66,13 +66,16 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 npm run build-lib
 ```  
 Builds the library for production to the `lib` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Usage in a NodeJS Project
+You could make use of the result via linking this github repo to your package.json. See an example here:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+[Example on how to include to node project ](https://github.com/TimSusa/midi-bricks/blob/master/package.json#L74) for more information.
 
+#### Usage in a Deno Project
+See an example here:
+
+[Example on how to include to deno project ](https://github.com/TimSusa/aleph-example/blob/master/pages/index.tsx#L3) for more information.
 
 
 ### Testing
