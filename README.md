@@ -9,7 +9,7 @@
 ## Live Knob Configurator
 [Live Web Demo](https://react-canvas-rotary-knob-timsusa.vercel.app) 
 <p align="center">
-  <img width="250" src="./docs/sc2.png">
+  <img width="400" src="./docs/sc2.png">
 </p>
 
 ## Get Started
