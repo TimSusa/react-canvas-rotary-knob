@@ -15,6 +15,7 @@
     "node_modules/**/*",
     "lib/**/*"
   ],
+  "main": "./src/index.tsx",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^26.0.22",
