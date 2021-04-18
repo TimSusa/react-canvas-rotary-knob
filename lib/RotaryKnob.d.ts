@@ -1,6 +1,5 @@
 /// <reference types="react" />
-export default RotaryKnob;
-declare function RotaryKnob({ isDisabled, width: tWidth, value, max, min, backgroundColor, color, caretColor, showValueLabel, debounceDelay, lineWidth, cbValChanged, }: {
+declare type tRotaryKnob = {
     isDisabled?: boolean | undefined;
     width?: number | undefined;
     value?: number | undefined;
@@ -13,4 +12,6 @@ declare function RotaryKnob({ isDisabled, width: tWidth, value, max, min, backgr
     debounceDelay?: number | undefined;
     lineWidth?: number | undefined;
     cbValChanged?: ((val: number) => number) | undefined;
-}): JSX.Element;
+};
+export default RotaryKnob;
+declare function RotaryKnob({ isDisabled, width: tWidth, value, max, min, backgroundColor, color, caretColor, showValueLabel, debounceDelay, lineWidth, cbValChanged, }: tRotaryKnob): JSX.Element;

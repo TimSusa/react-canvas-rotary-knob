@@ -1,7 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import { debounce } from "debounce";
 
+
 export default RotaryKnob;
+
+
+
+type tRotaryKnob = {
+  isDisabled?: boolean | undefined;
+  width?: number | undefined;
+  value?: number | undefined;
+  max?: number | undefined;
+  min?: number | undefined;
+  backgroundColor?: string | undefined;
+  color?: string | undefined;
+  caretColor?: string | undefined;
+  showValueLabel?: boolean | undefined;
+  debounceDelay?: number | undefined;
+  lineWidth?: number | undefined;
+  cbValChanged?: ((val: number) => number) | undefined;
+};
 
 function RotaryKnob({
   isDisabled = false,
@@ -16,12 +34,12 @@ function RotaryKnob({
   debounceDelay = 5,
   lineWidth = 40,
   cbValChanged = (val: number) => val,
-}) {
+}: tRotaryKnob) {
   const caretWidth = tWidth / lineWidth;
   const width = tWidth - 4 * caretWidth;
   const height = tWidth - 4 * caretWidth;
   let canvasRef = useRef<HTMLCanvasElement | null>(null);
-  let context = useRef<CanvasRenderingContext2D| null>(null);
+  let context = useRef<CanvasRenderingContext2D | null>(null);
   const [val, setVal] = useState(value);
   const isDragging = useRef(false);
   const verticalDiff = useRef(0);
@@ -88,7 +106,7 @@ function RotaryKnob({
 
   function yToVal(y: number) {
     const canvas: HTMLCanvasElement = canvasRef.current!;
-    const tH: number = canvas.height ;
+    const tH: number = canvas.height;
     const val = y / tH;
     const ttH = 1;
     const tmpVal = val < 0 ? 0 : val > ttH ? ttH : val;
@@ -170,7 +188,7 @@ function RotaryKnob({
     ctx.lineTo(0, xOffSet - 4 * caretWidth);
     ctx.rotate(rot);
     ctx.strokeStyle = caretColor;
-    ctx.lineWidth = caretWidth*2;
+    ctx.lineWidth = caretWidth * 2;
     ctx.stroke();
     ctx.translate(-radius, -radius);
     ctx.closePath();

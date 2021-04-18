@@ -2,15 +2,17 @@ import { useState } from "react";
 import "./App.css";
 import RotaryKnob from "./RotaryKnob";
 
+
 function App() {
   const [width, setWidth] = useState(250);
   const [max, setMax] = useState(127);
   const [min, setMin] = useState(27);
   const [lineWidth, setlineWidth] = useState(200);
   const [bgColor, setBgColor] = useState("#eee")
+  const [caretColor, setCaretColor] = useState("#fff")
   return (
     <div className="App">
-      <h2>Canvas Rotary Knob</h2>
+      <h2>Canvas Rotary Knob Configurator</h2>
 
       <div className="flex-wrap">
         <div className="flex-left">
@@ -66,11 +68,26 @@ function App() {
           >
           </input>
         
+          <label>caret Color:</label>
+          <input
+            name="c-color"
+            type="text"
+            defaultValue={caretColor}
 
+            onChange={onCaretColorChange}
+          >
+          </input>
         </div>
 
         <div className="flex-right">
-          <RotaryKnob width={width} max={max} min={min} lineWidth={lineWidth} backgroundColor={bgColor}></RotaryKnob>
+          <RotaryKnob 
+          width={width} 
+          max={max} 
+          min={min} 
+          lineWidth={lineWidth} 
+          backgroundColor={bgColor} 
+          caretColor={caretColor}
+          ></RotaryKnob>
         </div>
       </div>
     </div>
@@ -89,6 +106,9 @@ function App() {
   }
   function onBgColorChange (e: any) {
     setBgColor(e.target.value)
+  }
+  function onCaretColorChange(e: any){
+    setCaretColor(e.target.value)
   }
 }
 
