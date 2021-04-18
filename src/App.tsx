@@ -1,18 +1,25 @@
 import { useState } from "react";
 import "./App.css";
-import RotaryKnob from "./RotaryKnob";
+//import RotaryKnob from "./RotaryKnob";
+import RotKnob from "./RotKnob";
 
 function App() {
   const [width, setWidth] = useState(250);
   const [max, setMax] = useState(127);
   const [min, setMin] = useState(27);
   const [lineWidth, setlineWidth] = useState(200);
-  const [bgColor, setBgColor] = useState("#eee")
+  const [bgColor, setBgColor] = useState("#eee");
   return (
     <div className="App">
       <h2>Canvas Rotary Knob</h2>
 
       <div className="flex-wrap">
+        <RotKnob
+          value={50}
+          readOnly={false}
+          onChange={(e: any) => console.log(e)}
+        >{}
+        </RotKnob>
         <div className="flex-left">
           <label>width:</label>
           <input
@@ -33,7 +40,7 @@ function App() {
             onChange={onMaxChange}
           >
           </input>
-          
+
           <label>min:</label>
           <input
             name="min"
@@ -44,7 +51,7 @@ function App() {
             onChange={onMinChange}
           >
           </input>
-        
+
           <label>line width:</label>
           <input
             name="line-width"
@@ -55,22 +62,26 @@ function App() {
             onChange={onLineWidthChange}
           >
           </input>
-        
+
           <label>background Color:</label>
           <input
             name="b-color"
             type="text"
             defaultValue={bgColor}
-
             onChange={onBgColorChange}
           >
           </input>
-        
-
         </div>
 
         <div className="flex-right">
-          <RotaryKnob width={width} max={max} min={min} lineWidth={lineWidth} backgroundColor={bgColor}></RotaryKnob>
+          {/* <RotaryKnob
+            width={width}
+            max={max}
+            min={min}
+            lineWidth={lineWidth}
+            backgroundColor={bgColor}
+          >
+          </RotaryKnob> */}
         </div>
       </div>
     </div>
@@ -84,11 +95,11 @@ function App() {
   function onMinChange(e: any) {
     setMin(e.target.value);
   }
-  function onLineWidthChange(e: any){
-    setlineWidth(e.target.value)
+  function onLineWidthChange(e: any) {
+    setlineWidth(e.target.value);
   }
-  function onBgColorChange (e: any) {
-    setBgColor(e.target.value)
+  function onBgColorChange(e: any) {
+    setBgColor(e.target.value);
   }
 }
 
