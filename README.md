@@ -3,7 +3,7 @@
 - Powered with HTML Canvas
 
 <p align="center">
-  <img width="250" src="./docs/sc1.png">
+  <img width="250" src="./docs/sc11.png">
 </p>
 
 ## Live Knob Configurator
