@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { debounce } from "debounce";
 
-
 export default RotaryKnob;
-
-
 
 type tRotaryKnob = {
   isDisabled?: boolean | undefined;
@@ -51,42 +48,37 @@ function RotaryKnob({
     if ((max - min) <= 1) {
       isFloatNumberMode.current = true;
     }
-    send.current = debounce(sendValOut, debounceDelay);
-    function sendValOut(val: any) {
-      return cbValChanged(isFloatNumberMode.current ? val : Math.floor(val));
-    }
-    return () => {
-      send.current = null;
-    };
-  }, [max, min, debounceDelay]);
 
-  useEffect(() => {
     const canvas: HTMLCanvasElement = canvasRef.current!;
     let ctx: CanvasRenderingContext2D = canvas.getContext("2d")!;
     context.current = ctx;
     canvas.focus();
+
+    send.current = debounce(sendValOut, debounceDelay);
+    function sendValOut(val: any) {
+      return cbValChanged(isFloatNumberMode.current ? val : Math.floor(val));
+    }
+
     return () => {
+      send.current = null;
       ctx.restore();
     };
-  }, []);
+  }, [max, min, debounceDelay, cbValChanged]);
 
   useEffect(() => {
-    const ctx: any = context.current;
     lastOffset.current = valToY(val);
-    ctx.lineWidth = caretWidth;
-    ctx.lineCap = "round";
-    ctx.fillStyle = backgroundColor;
-    ctx.strokeStyle = color;
+    if (context.current) {
+      context.current.lineWidth = caretWidth;
+      context.current.lineCap = "round";
+      context.current.fillStyle = backgroundColor;
+      context.current.strokeStyle = color;
+    }
 
     draw(valToY(val));
     return () => {
-      ctx.restore();
+      context.current && context.current.restore();
     };
   }, [color, backgroundColor, width, height, caretWidth]);
-
-  useEffect(() => {
-    draw(valToY(value));
-  }, [value]);
 
   return (
     <div>
