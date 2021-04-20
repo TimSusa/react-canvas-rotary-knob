@@ -17,6 +17,7 @@ type tRotaryKnob = {
   lineWidth?: number | undefined;
   caretWidth?: number | undefined;
   cbValChanged?: ((val: number) => number) | undefined;
+  children?: never[];
 };
 
 function RotaryKnob({
@@ -25,7 +26,7 @@ function RotaryKnob({
   value = 80,
   max = 127,
   min = 0,
-  backgroundColor = "#ccc",
+  backgroundColor = "#9b9b9b",
   color = "#37332ee0",
   caretColor = "#67332ee0",
   showValueLabel = true,
@@ -83,7 +84,7 @@ function RotaryKnob({
     return () => {
       context.current && context.current.restore();
     };
-  }, [color, backgroundColor, width, height, caretWidth, lineWidth]);
+  }, [color, backgroundColor, caretColor, width, height, caretWidth, lineWidth]);
 
   return (
     <div>
