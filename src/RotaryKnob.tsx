@@ -48,14 +48,13 @@ function RotaryKnob({
     if ((max - min) <= 1) {
       isFloatNumberMode.current = true;
     }
-
     const canvas: HTMLCanvasElement = canvasRef.current!;
     let ctx: CanvasRenderingContext2D = canvas.getContext("2d")!;
     context.current = ctx;
     canvas.focus();
 
     send.current = debounce(sendValOut, debounceDelay);
-    function sendValOut(val: any) {
+    function sendValOut(val: number) {
       return cbValChanged(isFloatNumberMode.current ? val : Math.floor(val));
     }
 
@@ -74,7 +73,7 @@ function RotaryKnob({
       context.current.strokeStyle = color;
     }
 
-    draw(valToY(val));
+    draw(lastOffset.current);
     return () => {
       context.current && context.current.restore();
     };
@@ -108,7 +107,7 @@ function RotaryKnob({
 
   function valToY(val: number) {
     const canvas: HTMLCanvasElement = canvasRef.current!;
-    const tmpVal = canvas.height * val / max;
+    const tmpVal = canvas.height * (val - min) / (max - min);
     return tmpVal;
   }
 
@@ -116,7 +115,7 @@ function RotaryKnob({
     const ctx: any = context.current;
     if (!ctx.canvas) return;
     const yVal: number = yToVal(vDiff);
-    const yValTmp: number = yVal * max;
+    const yValTmp: number = (1 - yVal) * min + yVal * max;
     setVal(yValTmp);
     send.current(yValTmp);
     clearCanvasRect(ctx);
