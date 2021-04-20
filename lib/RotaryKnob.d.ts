@@ -12,6 +12,8 @@ declare type tRotaryKnob = {
     showValueLabel?: boolean | undefined;
     debounceDelay?: number | undefined;
     lineWidth?: number | undefined;
+    caretWidth?: number | undefined;
     cbValChanged?: ((val: number) => number) | undefined;
+    children?: never[];
 };
-declare function RotaryKnob({ isDisabled, width: tWidth, value, max, min, backgroundColor, color, caretColor, showValueLabel, debounceDelay, lineWidth, cbValChanged, }: tRotaryKnob): JSX.Element;
+declare function RotaryKnob({ isDisabled, width: tWidth, value, max, min, backgroundColor, color, caretColor, showValueLabel, debounceDelay, lineWidth, caretWidth: tCaretWidth, cbValChanged, }: tRotaryKnob): JSX.Element;
