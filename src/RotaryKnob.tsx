@@ -15,6 +15,7 @@ type tRotaryKnob = {
   showValueLabel?: boolean | undefined;
   debounceDelay?: number | undefined;
   lineWidth?: number | undefined;
+  caretWidth?: number | undefined;
   cbValChanged?: ((val: number) => number) | undefined;
 };
 
@@ -30,9 +31,12 @@ function RotaryKnob({
   showValueLabel = true,
   debounceDelay = 5,
   lineWidth = 40,
+  caretWidth: tCaretWidth = 160 / 40,
   cbValChanged = (val: number) => val,
 }: tRotaryKnob) {
-  const caretWidth = tWidth / lineWidth;
+  const caretWidth = tCaretWidth
+    ? (tWidth / tCaretWidth)
+    : (tWidth / lineWidth);
   const width = tWidth - 4 * caretWidth;
   const height = tWidth - 4 * caretWidth;
   let canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -48,11 +52,12 @@ function RotaryKnob({
     if ((max - min) <= 1) {
       isFloatNumberMode.current = true;
     }
+    // set up context
     const canvas: HTMLCanvasElement = canvasRef.current!;
     let ctx: CanvasRenderingContext2D = canvas.getContext("2d")!;
     context.current = ctx;
     canvas.focus();
-
+    // set up callback
     send.current = debounce(sendValOut, debounceDelay);
     function sendValOut(val: number) {
       return cbValChanged(isFloatNumberMode.current ? val : Math.floor(val));
@@ -64,10 +69,11 @@ function RotaryKnob({
     };
   }, [max, min, debounceDelay, cbValChanged]);
 
+  // initial draw
   useEffect(() => {
     lastOffset.current = valToY(val);
     if (context.current) {
-      context.current.lineWidth = caretWidth;
+      context.current.lineWidth = lineWidth;
       context.current.lineCap = "round";
       context.current.fillStyle = backgroundColor;
       context.current.strokeStyle = color;
@@ -77,7 +83,7 @@ function RotaryKnob({
     return () => {
       context.current && context.current.restore();
     };
-  }, [color, backgroundColor, width, height, caretWidth]);
+  }, [color, backgroundColor, width, height, caretWidth, lineWidth]);
 
   return (
     <div>
@@ -158,12 +164,12 @@ function RotaryKnob({
     const radius = canvas.height / 2;
     ctx.translate(radius, radius);
     const xOffSet = canvas.width / 2;
-    ctx.lineWidth = caretWidth;
+    ctx.lineWidth = lineWidth;
     ctx.beginPath();
     ctx.arc(
       0,
       0,
-      xOffSet - caretWidth,
+      xOffSet - lineWidth,
       0,
       Math.PI * 2,
       true,

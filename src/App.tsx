@@ -7,9 +7,10 @@ function App() {
   const [width, setWidth] = useState(250);
   const [max, setMax] = useState(127);
   const [min, setMin] = useState(27);
-  const [lineWidth, setlineWidth] = useState(200);
+  const [lineWidth, setlineWidth] = useState(10);
   const [bgColor, setBgColor] = useState("#eee")
   const [caretColor, setCaretColor] = useState("#fff")
+  const [caretWidth, setCaretWidth] = useState(35)
   return (
     <div className="App">
       <h2>Canvas Rotary Knob Configurator</h2>
@@ -51,13 +52,22 @@ function App() {
           <input
             name="line-width"
             type="range"
-            defaultValue={min}
-            min={10}
-            max={90}
+            defaultValue={lineWidth}
+            min={1}
+            max={10}
             onChange={onLineWidthChange}
           >
           </input>
-        
+          <label>caret width:</label>
+          <input
+            name="caret-width"
+            type="range"
+            defaultValue={caretWidth}
+            min={15}
+            max={100}
+            onChange={onCaretWidthChange}
+          >
+          </input>
           <label>background Color:</label>
           <input
             name="b-color"
@@ -87,6 +97,7 @@ function App() {
           lineWidth={lineWidth} 
           backgroundColor={bgColor} 
           caretColor={caretColor}
+          caretWidth={caretWidth}
           ></RotaryKnob>
         </div>
       </div>
@@ -103,6 +114,9 @@ function App() {
   }
   function onLineWidthChange(e: any){
     setlineWidth(e.target.value)
+  }
+  function onCaretWidthChange(e: any){
+    setCaretWidth(e.target.value)
   }
   function onBgColorChange (e: any) {
     setBgColor(e.target.value)
