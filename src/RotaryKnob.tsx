@@ -84,7 +84,15 @@ function RotaryKnob({
     return () => {
       context.current && context.current.restore();
     };
-  }, [color, backgroundColor, caretColor, width, height, caretWidth, lineWidth]);
+  }, [
+    color,
+    backgroundColor,
+    caretColor,
+    width,
+    height,
+    caretWidth,
+    lineWidth,
+  ]);
 
   return (
     <div>
@@ -166,11 +174,17 @@ function RotaryKnob({
     ctx.translate(radius, radius);
     const xOffSet = canvas.width / 2;
     ctx.lineWidth = lineWidth;
+
+    let arcRadius = xOffSet - lineWidth;
+    if (arcRadius < 0) {
+      arcRadius = 1;
+    }
+
     ctx.beginPath();
     ctx.arc(
       0,
       0,
-      xOffSet - lineWidth,
+      arcRadius,
       0,
       Math.PI * 2,
       true,
